@@ -22,3 +22,16 @@ Pour recuperer des fichiers sur git (origin/master):
 git fetch  -> met a jour l'historique
 
 git pull  -> met a jour les fichiers
+
+## Build a project with cmake:
+
+Don't be in neuron (to avoid reading it with git) or git ignore build folder (right way)
+
+
+mkdir build
+
+cd build
+
+cmake ../neuron
+
+make
