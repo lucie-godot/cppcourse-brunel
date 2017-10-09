@@ -24,7 +24,7 @@ class Neuron {
 	//Variables definition
 	
 	double v = v_ref;
-	
+	double t = 0;
 	public:
 	
 	
@@ -33,13 +33,12 @@ class Neuron {
 	
 	//Methodes
 	
-	void update (double &t, double a, double b, double h, double I_ext);
-	double update_period (double t, double n, double a, double b, double I_ext);
+	void update (double a, double b, double h, double I_ext);
+	double update_period (double n, double a, double b, double I_ext);
 	
 	void time_spike (vector<double> &spikes, double t);
 	int nb_spikes (vector<double> spike);
 	
 	
 };
-
 

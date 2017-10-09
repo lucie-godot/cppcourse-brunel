@@ -14,7 +14,7 @@ int main () {
 	neuron.mb_potential(-70);
 	
 	double t = 0;
-	double t_stop = 1000;
+	double t_stop = 10000;
 	double h = 1;
 	
 

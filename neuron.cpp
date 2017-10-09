@@ -25,17 +25,17 @@ void Neuron::mb_potential (double potential){
 
 
 
-void Neuron::update (double &t, double a, double b, double h, double I_ext) {
+void Neuron::update (double a, double b, double h, double I_ext) {
 	
 	
 	if (v >= v_thr) {   //The neuron is refractory
 		
-		double refractory_time = t+refractory_period;
-		cout<< refractory_time << endl;
-		if (t <= refractory_time) {	
+		cout << "Spike at time: " << t << endl;
+		
+		for (int x=t; x<= t + refractory_period; x+=h) {	
 			v = v_reset;
-			t+=h;
 		}
+		t+=refractory_period;
 	}
 		
 	if (t>=a and t<=b) {  //I_ext does exist 
@@ -54,10 +54,10 @@ void Neuron::update (double &t, double a, double b, double h, double I_ext) {
 
 
 
-double Neuron::update_period (double t, double n, double a, double b, double I_ext){
+double Neuron::update_period (double n, double a, double b, double I_ext){
 	
 	for (int i = 0; i < n; i += 1){
-		update (t, a, b, h, I_ext);
+		update (a, b, h, I_ext);
 		};
 	
 	return v;
@@ -68,7 +68,7 @@ double Neuron::update_period (double t, double n, double a, double b, double I_e
 
 
 
-void Neuron::time_spike (vector<double> &spikes, double t){
+void Neuron::time_spike (vector<double> &spikes){
 	if (v >= v_thr) {
 		spikes.push_back(t);
 	}
