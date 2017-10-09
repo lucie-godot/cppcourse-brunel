@@ -7,39 +7,38 @@ class Neuron {
 	
 	private:
 	
-	//Définition des constantes nécessaires à la classe
+	//constants definition
 	
 	const int tau = 20;
-	const int C = 1;
+	const double C = 1;
 	const int R = tau/C;
 	
 	const double v_thr = 20.0;
-	//const double v_reset = 0.0;
-	//const double v_ref = -70.0;
+	const double v_reset = 0.0;
+	const double v_ref = -70.0;
 	
-	//Définition des variables nécessaires à la classe
+	const double refractory_period = 2 ;
+	const double h = 1;
 	
-	double v;
 	
+	//Variables definition
+	
+	double v = v_ref;
 	
 	public:
 	
-	//Accesseurs
 	
 	double mb_potential ();
-	
-	
-	//
-	
 	void mb_potential (double potential);
 	
-	//Méthodes
+	//Methodes
 	
-	double update (double refractory_period, double h, double I_ext, double t);
-	double update_period (double refractory_period, double h, double I_ext, double t, double n);
+	void update (double &t, double a, double b, double h, double I_ext);
+	double update_period (double t, double n, double a, double b, double I_ext);
 	
-	double time_spike (double t);
+	void time_spike (vector<double> &spikes, double t);
 	int nb_spikes (vector<double> spike);
+	
 	
 };
 

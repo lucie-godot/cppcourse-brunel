@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 using namespace std;
 
@@ -7,21 +8,25 @@ using namespace std;
 
 int main () {
 	
+	//Variables declaration
+	
 	Neuron neuron;
 	neuron.mb_potential(-70);
 	
 	double t = 0;
-	double t_stop = 40;
-	double h = 20;
-	double I_ext;
-	double refractory_period = 2 ;
+	double t_stop = 1000;
+	double h = 1;
 	
-	vector<double> potential (1);
-	vector<bool> spike (1);
+
+	//Creation of the file which contains the membrane potential
+	
+	ofstream f_mb_potential ("mb_potential");
 	
 	//Specification of I_ext and the time interval
 	
+	double I_ext;
 	double value;
+	
 	cout<<"Can you specify the value of the external current ?"<<endl;
 	cin>>value;
 	I_ext = value;
@@ -34,20 +39,14 @@ int main () {
 	
 	
 	
-	while (t <= t_stop) {
+	
+	do {
 		
-		if ( t<=a and t<=b){  //interval in which I_ext is not equal to 0, if the neuron is not refractory
-//			if (
-//			potential.push_back(neuron.update(refractory_period, h, I_ext, t));  //Update of the membrane potential if I_ext is not equal to 0.
-		};
-		
-		
-//		spike.push_back(neuron.time_spike(t));  //Je regarde au cours du temps quand est-ce que j'ai un spike
-		
-		
-		t += h;
+		f_mb_potential << neuron.mb_potential() << endl;
+		neuron.update (t, a, b, h, I_ext);	
 		
 	}
-	cout << potential[0] << endl;
+	while (t <= t_stop);
+	
 	return 0;
 }
