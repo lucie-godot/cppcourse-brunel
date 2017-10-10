@@ -10,85 +10,53 @@ using namespace std;
 
 
 
-double Neuron::mb_potential () {
-	return v;
+double Neuron::get_mb_potential () const {
+	return v_;
 };
 
 
 
 
-void Neuron::mb_potential (double potential){
-	v = potential;
+int Neuron::get_nb_spikes () const {
+	return nb_spikes_;
 };
 
 
 
+int Neuron::get_local_time () const {
+	return local_time_;
+};
 
 
-void Neuron::update (double a, double b, double h, double I_ext) {
+
+void Neuron::update (double I_ext_) {
 	
+	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
 	
-	if (v >= v_thr) {   //The neuron is refractory
+	if (v_ >= v_thr_) {  //The neuron is refractory
 		
-		cout << "Spike at time: " << t << endl;
+		nb_spikes_ += 1;
 		
-		for (int x=t; x<= t + refractory_period; x+=h) {	
-			v = v_reset;
-		}
-		t+=refractory_period;
-	}
-		
-	if (t>=a and t<=b) {  //I_ext does exist 
-			
-		v = exp(-(h/tau))*v + I_ext*R*(1-exp(-(h/tau)));
-		t+=h;
+		for (int x_ = local_time_; x_ <= local_time_ + refractory_period_; x_ += h_){
+			v_ = v_reset_;
+		};
 	}
 	else {
-			
-		v = exp(-h/tau)*v;
-		t+=h;
+		v_ = exp(-(h_/tau_))*v_ + I_ext_*R_*(1-exp(-(h_/tau_)));
+		local_time_ += h_;
+		
 	};
 	
 };
 
 
 
-
-double Neuron::update_period (double n, double a, double b, double I_ext){
-	
-	for (int i = 0; i < n; i += 1){
-		update (a, b, h, I_ext);
-		};
-	
-	return v;
-	
-};
-
-
-
-
-
-void Neuron::time_spike (vector<double> &spikes){
-	if (v >= v_thr) {
-		spikes.push_back(t);
-	}
-};
-
-
-
-
-int Neuron::nb_spikes (vector<double> spike) {   //Return the number of spikes during a period of time given
-	
-	int result = 0;
-	
-	for (size_t i = 0; i <= spike.size(); i+=1){
-		if (spike[i] != 0){
-			result += 1;
-		};
+bool Neuron::spike () const {
+	if (v_ >= v_thr_) {
+		return true;
 	};
+	return false;
 	
-	return result;
-};
-
+}
 
 #endif
