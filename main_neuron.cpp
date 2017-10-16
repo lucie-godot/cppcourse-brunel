@@ -10,7 +10,8 @@ int main () {
 	
 	//Variables declaration
 	
-	Neuron neuron;
+	Neuron n1;
+	Neuron n2;
 	
 	double t_ = 0;
 	double t_stop_ = 10000;
@@ -19,8 +20,10 @@ int main () {
 
 	//Creation of the file which contains the membrane potential
 	
-	ofstream f_mb_potential ("mb_potential");
-	f_mb_potential << neuron.get_mb_potential() << endl;
+	ofstream f_mb_potential_1 ("mb_potential_1");
+	ofstream f_mb_potential_2 ("mb_potential_2");
+	f_mb_potential_1 << n1.get_mb_potential() << endl;
+	f_mb_potential_2 << n2.get_mb_potential() << endl;
 	
 	//Specification of I_ext and the time interval
 	
@@ -40,30 +43,38 @@ int main () {
 	while (a_>=b_);
 	
 	
-	//Important loop for one neuron 
+	//Important loop 
 	
 	while (t_ <= t_stop_) {
 		
-		//Update of the membrane potential
+		//Update of the membrane potential of n1
 		
 		if (t_ >= a_ and t_ <= b_) {
-			if (neuron.update (I_ext_)){
-				neuron.spike (t_);
+			if (n1.update (I_ext_)){
+				n1.spike (t_);
+				n2.add_term_buffer(n1.get_local_time(), n1.get_J());
 				};
-			f_mb_potential << neuron.get_mb_potential() << endl;
+			f_mb_potential_1 << n1.get_mb_potential() << endl;
+			
+			n2.update (I_ext_);
+			f_mb_potential_2 << n2.get_mb_potential() << endl;
 		}
 		else {
-			if (neuron.update (0)){
-				neuron.spike (t_);
+			if (n1.update (0)){
+				n1.spike (t_);
 				};
-			f_mb_potential << neuron.get_mb_potential() << endl;
+			f_mb_potential_1 << n1.get_mb_potential() << endl;
 		};
 		
 		
 		do {
 		t_ += h_; }
-		while (t_ < neuron.get_local_time ());
-	};
+		while (t_ < n1.get_local_time ());
+		
+		
+		n2.delete_term_buffer(t_);
+		
+	}
 	
 	
 	return 0;
