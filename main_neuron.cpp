@@ -40,23 +40,23 @@ int main () {
 	while (a_>=b_);
 	
 	
-	
+	//Important loop for one neuron 
 	
 	while (t_ <= t_stop_) {
 		
 		//Update of the membrane potential
 		
 		if (t_ >= a_ and t_ <= b_) {
-			neuron.update (I_ext_);
+			if (neuron.update (I_ext_)){
+				neuron.spike (t_);
+				};
 			f_mb_potential << neuron.get_mb_potential() << endl;
 		}
 		else {
-			neuron.update (0);
+			if (neuron.update (0)){
+				neuron.spike (t_);
+				};
 			f_mb_potential << neuron.get_mb_potential() << endl;
-		};
-		
-		if (neuron.spike()) {
-			cout << "There is a spike at time : " << t_*0.1 << endl;  //Pour tenir compte du décalage avec h=0.1
 		};
 		
 		
@@ -64,8 +64,6 @@ int main () {
 		t_ += h_; }
 		while (t_ < neuron.get_local_time ());
 	};
-	
-	
 	
 	
 	return 0;

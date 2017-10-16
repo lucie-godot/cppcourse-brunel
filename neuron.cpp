@@ -29,7 +29,7 @@ int Neuron::get_local_time () const {
 
 
 
-void Neuron::update (double I_ext_) {
+double Neuron::update (double I_ext_) {
 	
 	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
 	
@@ -40,10 +40,17 @@ void Neuron::update (double I_ext_) {
 		for (int x_ = local_time_; x_ <= local_time_ + refractory_period_; x_ += h_){
 			v_ = v_reset_;
 		};
+		return true;
+		
+		ring_buffer [local_time_%(D+1)] += J
+		cout << ring_buffer [local_time_%(D+1)] << endl;
 	}
+	
 	else {
-		v_ = exp(-(h_/tau_))*v_ + I_ext_*R_*(1-exp(-(h_/tau_)));
+		v_ = c1*v_ + I_ext_*c2 + ring_buffer [local_time_%(D+1)];
 		local_time_ += h_;
+		
+		return false;
 		
 	};
 	
@@ -51,12 +58,32 @@ void Neuron::update (double I_ext_) {
 
 
 
-bool Neuron::spike () const {
-	if (v_ >= v_thr_) {
-		return true;
-	};
-	return false;
+void Neuron::spike (double t_) const {
 	
-}
+	cout << "There is a spike at time : " << t_*0.1 << endl;  //Pour tenir compte du décalage avec h=0.1	
+};
+
+
+
+
+
+double Neuron::connection () {
+	
+	
+	
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif
