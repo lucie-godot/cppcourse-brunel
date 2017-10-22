@@ -48,8 +48,8 @@ void Neuron::add_term_buffer (int t_, double J_neuron_pre_) const{  //t_ est le 
 
 
 
-void Neuron::delete_term_buffer (int t_)const{
-	ring_buffer [(t_ + D) % (D + 1)] = 0
+void Neuron::delete_term_buffer (int t_){
+	ring_buffer [(t_ + D) % (D + 1)] = 0;
 };
 
 
