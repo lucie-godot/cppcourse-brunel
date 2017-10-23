@@ -24,13 +24,13 @@ class Neuron {
 	
 	const double V_THR_ = 20.0;  //Value of the threshold
 	const double V_RESET_ = 0.0;
-	const double V_REF_ = -70.0;
+	const double V_REF_ = 0;
 	
 	const double REF_TIME_ = 2 ;
 	const double H_ = 1;   //definition of the time path
 	
-	const double C1 = exp(-(H_/TAU_)); // value of the fisrt constant in the update formula
-	const double C2 = R_*(1-exp(-(H_/TAU_))); //value of the second constant in the update formula
+	const double C1 = exp(-((H_*0.1)/TAU_)); // value of the fisrt constant in the update formula, H_*0.1 to take the lnght of the interval.
+	const double C2 = R_*(1-exp(-((H_*0.1)/TAU_))); //value of the second constant in the update formula
 	
 	const double J = 0.1;  //definition of the weight of the connection
 	const int D = 15;   //definition of the delay of the connexion
@@ -62,7 +62,8 @@ class Neuron {
 	
 	//Methods
 	
-	double update (double I_ext_);
+	bool update (double I_ext_);
+	void n_update (int nb_update_, double I_ext_);
 	
 	
 };

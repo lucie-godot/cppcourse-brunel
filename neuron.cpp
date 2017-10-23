@@ -54,7 +54,7 @@ void Neuron::delete_term_buffer (int t_){
 
 
 
-double Neuron::update (double I_ext_) {
+bool Neuron::update (double I_ext_) {
 	
 	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
 	
@@ -84,6 +84,12 @@ double Neuron::update (double I_ext_) {
 };
 
 
+
+void Neuron::n_update (int nb_update_, double I_ext_) {
+	for (int i (0); i<=nb_update_; i+=1) {
+		update (I_ext_);
+	};
+};
 
 void Neuron::spike (double t_) const {
 	
