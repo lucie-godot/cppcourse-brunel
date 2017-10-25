@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cstdlib>
+#include <cstdio>
+#include <ctime>
 using namespace std;
 
 #include "neuron.h"
@@ -8,22 +11,44 @@ using namespace std;
 
 int main () {
 	
-	//Variables declaration
 	
-	Neuron n1;
-	Neuron n2;
+	//Creation of the network of neurons
+	
+	
+	
+	vector<Neuron> neuron (12500);  //This is the vector which contains all the neurons
+	//The first 10000 neurons are the excitatory one.
+	int connections [12500][12500];  //This is the matrix of the connections between the neurons
+	// the neurons are represented on the columns, the lines represent the connections with one neuron.
+	
+	for (int i = 0; i < 12500; i += 1) {
+		srand(time(NULL));  //Initilization of rand, to obtain random numbers
+		for(int con_ex = 0; con_ex < 1000; con_ex += 1) {  //con_ext is the number of connection with an excitatory neuron for each neuron
+			connections [rand()%10000][i] += 1; //We are choosing the connections with excitatory neurons, for each neuron.
+		};
+		for(int con_in = 0; con_in < 250; con_in += 1) {  //con_in is the number of connection with an inhibitory neuron for each neuron
+			connections [rand()%10000 + 250][i] += 1;  //Connections with inhibitory neurons
+		};
+		
+	};
+	
+	
+	
+	
+	//Creation of the time variables
 	
 	double t_ = 0;
 	double t_stop_ = 10000;
 	double h_ = 1;
 	
-
-	//Creation of the file which contains the membrane potential
 	
-	ofstream f_mb_potential_1 ("mb_potential_1");
-	ofstream f_mb_potential_2 ("mb_potential_2");
-	f_mb_potential_1 << n1.get_mb_potential() << endl;
-	f_mb_potential_2 << n2.get_mb_potential() << endl;
+	//Creation of variables
+	int nu_ext = 0;   //Modifier valeur !!!!!!!!!!!
+	int nb_connections_ex = 1000;
+
+	//Creation of the file which contains the time of the spikes
+	
+	ofstream f_spikes_time ("spikes_time");
 	
 	//Specification of I_ext and the time interval
 	
@@ -49,33 +74,40 @@ int main () {
 		
 		//Update of the membrane potential of n1
 		
-		if (t_ >= a_ and t_ <= b_) {
-			if (n1.update (I_ext_, nu_ext, nb_connections_ex)){
-				n1.spike (t_);
-				n2.add_term_buffer(n1.get_local_time(), n1.get_J());
+		
+		for (int i = 0; i < 12500; i += 1) {  //Est-ce au'il ne vaudrait pas mieux utiliser la taille, le type size_t ????????
+			if (t_ >= a_ and t_ <= b_) {
+				if (neuron[i].update (I_ext_, nu_ext, nb_connections_ex)){  //If the neuron number i spikes
+					neuron[i].spike(t_);
+					f_spikes_time << neuron[i].get_spike_time(t_) << endl;
+					for (int j = 0; j < 12500; j += 1) {  //For every connection, we have to add 1 to the ring buffer.
+						if (connections[j][i] != 0){  //We are searching for the connections for a fixed column
+							neuron[j].add_term_buffer(neuron[i].get_local_time(), neuron[i].get_J());
+						};
+					};
 				};
-			f_mb_potential_1 << n1.get_mb_potential() << endl;
+			}
 			
-			n2.update (I_ext_, nu_ext, nb_connections_ex);
-			f_mb_potential_2 << n2.get_mb_potential() << endl;
-		}
-		else {
-			if (n1.update (0, nu_ext, nb_connections_ex)){
-				n1.spike (t_);
+			else {
+				if (neuron[i].update(0, nu_ext, nb_connections_ex)){
+					neuron[i].spike(t_);
+					f_spikes_time << neuron[i].get_spike_time(t_) << endl;
 				};
-			f_mb_potential_1 << n1.get_mb_potential() << endl;
+			};
 		};
 		
 		
-		do {
-		t_ += h_; }
-		while (t_ < n1.get_local_time ());
-		
-		
-		n2.delete_term_buffer(t_);
-		
-	}
+		for (int i = 0; i < 12500; i += 1){
+			do {
+				t_ += h_;
+				for (int j = 0; j < 12500; j += 1){
+					neuron[j].delete_term_buffer(t_);
+				}
+			}
+			while (t_ < neuron[i].get_local_time ());
+		};
+
 	
-	
+};
 	return 0;
 }

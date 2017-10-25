@@ -35,6 +35,15 @@ int Neuron::get_local_time () const {
 
 
 
+double Neuron::get_spike_time (double t_)const {
+	return t_*0.1;
+};
+
+
+
+
+
+
 double Neuron::get_J () const {
 	return J;
 };

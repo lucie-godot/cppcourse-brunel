@@ -55,6 +55,7 @@ class Neuron {
 	double get_mb_potential () const;
 	int get_nb_spikes () const;
 	int get_local_time ()const;
+	double get_spike_time (double t_)const;
 	double get_J ()const;
 	void add_term_buffer (int t_, double J_neuron_pre_);  // fonction permettant de modifier le buffer avec le courant des neurones pre-synaptiques
 	void delete_term_buffer (int t_);
