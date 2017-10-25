@@ -50,17 +50,17 @@ int main () {
 		//Update of the membrane potential of n1
 		
 		if (t_ >= a_ and t_ <= b_) {
-			if (n1.update (I_ext_)){
+			if (n1.update (I_ext_, nu_ext, nb_connections_ex)){
 				n1.spike (t_);
 				n2.add_term_buffer(n1.get_local_time(), n1.get_J());
 				};
 			f_mb_potential_1 << n1.get_mb_potential() << endl;
 			
-			n2.update (I_ext_);
+			n2.update (I_ext_, nu_ext, nb_connections_ex);
 			f_mb_potential_2 << n2.get_mb_potential() << endl;
 		}
 		else {
-			if (n1.update (0)){
+			if (n1.update (0, nu_ext, nb_connections_ex)){
 				n1.spike (t_);
 				};
 			f_mb_potential_1 << n1.get_mb_potential() << endl;

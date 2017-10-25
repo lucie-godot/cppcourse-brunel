@@ -15,7 +15,7 @@ class Neuron {
 	
 	// Definition of the attribute of the class
 	
-		//Constants  maj
+		//Constants
 		
 	const int TAU_ = 20;
 	const double C_ = 1;
@@ -56,14 +56,14 @@ class Neuron {
 	int get_nb_spikes () const;
 	int get_local_time ()const;
 	double get_J ()const;
-	void add_term_buffer (int t_, double J_neuron_pre_)const;  // fonction permettant de modifier le buffer avec le courant des neurones pre-synaptiques
+	void add_term_buffer (int t_, double J_neuron_pre_);  // fonction permettant de modifier le buffer avec le courant des neurones pre-synaptiques
 	void delete_term_buffer (int t_);
 	void spike (double t_) const;
 	
 	//Methods
 	
-	bool update (double I_ext_);
-	void n_update (int nb_update_, double I_ext_);
+	bool update (double I_ext_, int nu_ext, int nb_connections_ex);
+	void n_update (int nb_update_, double I_ext_, int nu_ext, int nb_connections_ex);
 	
 	
 };
