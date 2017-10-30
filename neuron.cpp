@@ -64,7 +64,9 @@ void Neuron::delete_term_buffer (int t_){
 
 
 
-bool Neuron::update (double I_ext_, int nu_ext, int nb_connections_ex) {
+
+
+bool Neuron::update (int nu_ext, int nb_connections_ex) {
 	
 	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
 	
@@ -84,7 +86,7 @@ bool Neuron::update (double I_ext_, int nu_ext, int nb_connections_ex) {
 		mt19937 gen(rd());
 		poisson_distribution<> d(nu_ext * nb_connections_ex * H_ * J);
 		
-		v_ = C1*v_ + I_ext_*C2 + ring_buffer [local_time_%(D+1)] + d(gen);
+		v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)] + d(gen);
 		local_time_ += H_;
 		
 		return false;
@@ -94,9 +96,9 @@ bool Neuron::update (double I_ext_, int nu_ext, int nb_connections_ex) {
 
 
 
-void Neuron::n_update (int nb_update_, double I_ext_, int nu_ext, int nb_connections_ex) {
+void Neuron::n_update (int nb_update_, int nu_ext, int nb_connections_ex) {
 	for (int i (0); i<=nb_update_; i+=1) {
-		update (I_ext_, nu_ext, nb_connections_ex);
+		update (nu_ext, nb_connections_ex);
 	};
 };
 

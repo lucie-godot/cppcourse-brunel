@@ -29,6 +29,7 @@ class Neuron {
 	const double REF_TIME_ = 2 ;
 	const double H_ = 1;   //definition of the time path
 	
+	const double I_EXT_ = 0;  //external current we can choose to input, useful for the tests.   Interval (a,b) ???????????
 	const double C1 = exp(-((H_*0.1)/TAU_)); // value of the fisrt constant in the update formula, H_*0.1 to take the lnght of the interval.
 	const double C2 = R_*(1-exp(-((H_*0.1)/TAU_))); //value of the second constant in the update formula
 	
@@ -41,8 +42,10 @@ class Neuron {
 	double v_;    //definition of the membrne potential
 	int local_time_;   // definition of the personal clock of the neuron
 	int nb_spikes_;
-	vector<double> ring_buffer;   //Pourquoi utiliser un vector et pas un array ??? Pourquoi D + 1 ne fonctionne pas ?
-	
+	vector<double> ring_buffer;
+
+
+
 	public:
 	
 	// Constructor
@@ -63,8 +66,8 @@ class Neuron {
 	
 	//Methods
 	
-	bool update (double I_ext_, int nu_ext, int nb_connections_ex);
-	void n_update (int nb_update_, double I_ext_, int nu_ext, int nb_connections_ex);
+	bool update (int nu_ext, int nb_connections_ex);
+	void n_update (int nb_update_, int nu_ext, int nb_connections_ex);
 	
 	
 };
