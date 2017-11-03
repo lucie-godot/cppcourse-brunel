@@ -1,5 +1,3 @@
-#include <iostream>
-#include <math.h>
 #include <random>
 #include <iomanip>
 
@@ -10,7 +8,6 @@ using namespace std;
 
 
 Neuron::Neuron():v_(V_REF_), local_time_(0), nb_spikes_(0), ring_buffer(D+1, 0.0) {
-	
 };
 	
 	
@@ -52,8 +49,15 @@ double Neuron::get_J () const {
 
 
 
-void Neuron::add_term_buffer (int t_, double J_neuron_pre_) {  //t_ est le local_time_ du 2eme neuron
-	ring_buffer [(t_ + D) % (D + 1)] += J_neuron_pre_ ;    //On prend en compte le délais en mettant J directement dans la bonne case
+void Neuron::add_term_buffer_ex (int t_) {  //t_ est le local_time_ du 2eme neuron
+	ring_buffer [(t_ + D) % (D + 1)] += 1 ;    //On prend en compte le délais en mettant J directement dans la bonne case
+};
+
+
+
+
+void Neuron::add_term_buffer_in (int t_) {
+	ring_buffer [(t_ + D) % (D + 1)] -= 5;
 };
 
 
@@ -66,7 +70,7 @@ void Neuron::delete_term_buffer (int t_){
 
 
 
-bool Neuron::update (int nu_ext, int nb_connections_ex) {
+bool Neuron::update () {
 	
 	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
 	
@@ -75,8 +79,9 @@ bool Neuron::update (int nu_ext, int nb_connections_ex) {
 		nb_spikes_ += 1;
 		
 		for (int x_ = local_time_; x_ <= local_time_ + REF_TIME_; x_ += H_){
-			v_ = V_RESET_;
+			ring_buffer [x_%(D+1)] += 1001;  ///Like that, we can find these cases easily to say if the neuron is refractory or not
 		};
+		local_time_ += H_;
 		return true;
 	}
 	
@@ -84,21 +89,25 @@ bool Neuron::update (int nu_ext, int nb_connections_ex) {
 		//Implementation of the Poisson distribution
 		random_device rd;
 		mt19937 gen(rd());
-		poisson_distribution<> d(nu_ext * nb_connections_ex * H_ * J);
+		poisson_distribution<> d(2);  //nu_ext * nb_connections_ex * H_ * J
 		
-		v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)] + d(gen);
-		local_time_ += H_;
-		
-		return false;
-		
+		if (ring_buffer[local_time_%(D+1)] >= 1001) {
+			v_ = V_RESET_;
+			cout << v_ << endl;
+		}
+		else {
+			v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)]*J + d(gen)*J;
+	    };
+	    local_time_ += H_;
+	    return false;
 	};
 };
 
 
 
-void Neuron::n_update (int nb_update_, int nu_ext, int nb_connections_ex) {
+void Neuron::n_update (int nb_update_) {
 	for (int i (0); i<=nb_update_; i+=1) {
-		update (nu_ext, nb_connections_ex);
+		update ();
 	};
 };
 
