@@ -60,6 +60,44 @@ CMAKE_SOURCE_DIR = /Users/luciegodot/Documents/neuron
 CMAKE_BINARY_DIR = /Users/luciegodot/Documents/neuron/buils
 
 #=============================================================================
+# Target rules for target CMakeFiles/neuron_unittest.dir
+
+# All Build rule for target.
+CMakeFiles/neuron_unittest.dir/all: gtest/CMakeFiles/gtest_main.dir/all
+CMakeFiles/neuron_unittest.dir/all: gtest/CMakeFiles/gtest.dir/all
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/depend
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/luciegodot/Documents/neuron/buils/CMakeFiles --progress-num=9,10,11 "Built target neuron_unittest"
+.PHONY : CMakeFiles/neuron_unittest.dir/all
+
+# Include target in all.
+all: CMakeFiles/neuron_unittest.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/neuron_unittest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luciegodot/Documents/neuron/buils/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/neuron_unittest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/luciegodot/Documents/neuron/buils/CMakeFiles 0
+.PHONY : CMakeFiles/neuron_unittest.dir/rule
+
+# Convenience name for target.
+neuron_unittest: CMakeFiles/neuron_unittest.dir/rule
+
+.PHONY : neuron_unittest
+
+# clean rule for target.
+CMakeFiles/neuron_unittest.dir/clean:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/clean
+.PHONY : CMakeFiles/neuron_unittest.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/neuron_unittest.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/neuron.dir
 
 # All Build rule for target.

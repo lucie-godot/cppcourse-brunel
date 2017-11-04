@@ -10,14 +10,14 @@ using namespace std;
 
 
 int main () {
+	
 	int t_ = 0;
 	int t_stop_ = 10000;
-	cout << "hello" << endl;
 	
-	Network cortex;
+	Network cortex ;
 	cortex.set_neuron ();
 	cortex.set_connection ();
-	cout << "hello" << endl;
 	cortex.general_update(t_, t_stop_);
+	cout << "hello" << endl;
 	return 0;
 }

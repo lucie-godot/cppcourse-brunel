@@ -122,6 +122,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named neuron_unittest
+
+# Build rule for target.
+neuron_unittest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 neuron_unittest
+.PHONY : neuron_unittest
+
+# fast build rule for target.
+neuron_unittest/fast:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/build
+.PHONY : neuron_unittest/fast
+
+#=============================================================================
 # Target rules for targets named neuron
 
 # Build rule for target.
@@ -220,6 +233,7 @@ neuron.o: neuron.cpp.o
 
 # target to build an object file
 neuron.cpp.o:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/neuron.cpp.o
 	$(MAKE) -f CMakeFiles/neuron.dir/build.make CMakeFiles/neuron.dir/neuron.cpp.o
 .PHONY : neuron.cpp.o
 
@@ -229,6 +243,7 @@ neuron.i: neuron.cpp.i
 
 # target to preprocess a source file
 neuron.cpp.i:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/neuron.cpp.i
 	$(MAKE) -f CMakeFiles/neuron.dir/build.make CMakeFiles/neuron.dir/neuron.cpp.i
 .PHONY : neuron.cpp.i
 
@@ -238,8 +253,36 @@ neuron.s: neuron.cpp.s
 
 # target to generate assembly for a file
 neuron.cpp.s:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/neuron.cpp.s
 	$(MAKE) -f CMakeFiles/neuron.dir/build.make CMakeFiles/neuron.dir/neuron.cpp.s
 .PHONY : neuron.cpp.s
+
+test.o: test.cpp.o
+
+.PHONY : test.o
+
+# target to build an object file
+test.cpp.o:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/test.cpp.o
+.PHONY : test.cpp.o
+
+test.i: test.cpp.i
+
+.PHONY : test.i
+
+# target to preprocess a source file
+test.cpp.i:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/test.cpp.i
+.PHONY : test.cpp.i
+
+test.s: test.cpp.s
+
+.PHONY : test.s
+
+# target to generate assembly for a file
+test.cpp.s:
+	$(MAKE) -f CMakeFiles/neuron_unittest.dir/build.make CMakeFiles/neuron_unittest.dir/test.cpp.s
+.PHONY : test.cpp.s
 
 # Help Target
 help:
@@ -250,6 +293,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
+	@echo "... neuron_unittest"
 	@echo "... neuron"
 	@echo "... gtest_main"
 	@echo "... gtest"
@@ -262,6 +306,9 @@ help:
 	@echo "... neuron.o"
 	@echo "... neuron.i"
 	@echo "... neuron.s"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 

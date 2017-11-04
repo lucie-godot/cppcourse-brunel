@@ -278,10 +278,6 @@ cxxabi.h
 acxx_demangle.h
 -
 
-/Users/luciegodot/Documents/neuron/experiment.h
-network.h
-/Users/luciegodot/Documents/neuron/network.h
-
 /Users/luciegodot/Documents/neuron/network.h
 fstream
 -
@@ -308,13 +304,11 @@ math.h
 iostream
 -
 gtest/gtest.h
-/Users/luciegodot/Documents/neuron/gtest/gtest.h
+-
 math.h
 -
 neuron.h
 /Users/luciegodot/Documents/neuron/neuron.h
 network.h
 /Users/luciegodot/Documents/neuron/network.h
-experiment.h
-/Users/luciegodot/Documents/neuron/experiment.h
 

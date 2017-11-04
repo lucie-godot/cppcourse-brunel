@@ -27,7 +27,6 @@ CMakeFiles/neuron_unittest.dir/test.cpp.o
  ../gtest/include/gtest/internal/gtest-string.h
  ../gtest/include/gtest/internal/gtest-tuple.h
  ../gtest/include/gtest/internal/gtest-type-util.h
- /Users/luciegodot/Documents/neuron/experiment.h
  /Users/luciegodot/Documents/neuron/network.h
  /Users/luciegodot/Documents/neuron/neuron.h
  /Users/luciegodot/Documents/neuron/test.cpp

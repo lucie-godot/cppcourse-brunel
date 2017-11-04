@@ -7,7 +7,7 @@ using namespace std;
 
 
 
-Neuron::Neuron():v_(V_REF_), local_time_(0), nb_spikes_(0), ring_buffer(D+1, 0.0) {
+Neuron::Neuron(double i_, double i_ext_):I_EXT_(i_ext_), J(i_), v_(V_REF_), local_time_(0), clock_ref_(0), nb_spikes_(0), ring_buffer(D+1, 0.0) {
 };
 	
 	
@@ -49,16 +49,16 @@ double Neuron::get_J () const {
 
 
 
-void Neuron::add_term_buffer_ex (int t_) {  //t_ est le local_time_ du 2eme neuron
-	ring_buffer [(t_ + D) % (D + 1)] += 1 ;    //On prend en compte le délais en mettant J directement dans la bonne case
+void Neuron::add_term_buffer (int t_) {  //t_ est le local_time_ du 2eme neuron
+	ring_buffer [(t_ + D) % (D + 1)] += J ;    //On prend en compte le délais en mettant J directement dans la bonne case
 };
 
 
 
 
-void Neuron::add_term_buffer_in (int t_) {
-	ring_buffer [(t_ + D) % (D + 1)] -= 5;
-};
+//void Neuron::add_term_buffer_in (int t_) {
+//	ring_buffer [(t_ + D) % (D + 1)] -= 5;
+//};
 
 
 
@@ -70,48 +70,50 @@ void Neuron::delete_term_buffer (int t_){
 
 
 
-bool Neuron::update () {
+bool Neuron::update (int poisson_) {
 	
-	//dans le premier if on traite le cas d'un neurone réfractaire, et dans le else les autres cas.
-	
-	if (v_ >= V_THR_) {  //The neuron is refractory
-		
-		nb_spikes_ += 1;
-		
-		for (int x_ = local_time_; x_ <= local_time_ + REF_TIME_; x_ += H_){
-			ring_buffer [x_%(D+1)] += 1001;  ///Like that, we can find these cases easily to say if the neuron is refractory or not
-		};
+	if (clock_ref_ > 0) {
+		v_ = V_RESET_;
 		local_time_ += H_;
-		return true;
+		clock_ref_ -= 1;
+		return false;
 	}
-	
 	else {
-		//Implementation of the Poisson distribution
-		random_device rd;
-		mt19937 gen(rd());
-		poisson_distribution<> d(2);  //nu_ext * nb_connections_ex * H_ * J
-		
-		if (ring_buffer[local_time_%(D+1)] >= 1001) {
+		if (v_ >= V_THR_) {  //The neuron is refractory
+			nb_spikes_ += 1;
+			clock_ref_ = REF_TIME_;
 			v_ = V_RESET_;
-			cout << v_ << endl;
+			local_time_ += H_;
+			return true;
 		}
 		else {
-			v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)]*J + d(gen)*J;
-	    };
-	    local_time_ += H_;
-	    return false;
+			//Implementation of the Poisson distribution
+			random_device rd;
+			mt19937 gen(rd());
+			poisson_distribution<> d(2);  //nu_ext * nb_connections_ex * H_ * J
+			
+			v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)] + d(gen)*0.1*poisson_;
+			
+			local_time_ += H_;
+			clock_ref_ -= 1;
+			return false;
+		}
 	};
 };
-
-
-
-void Neuron::n_update (int nb_update_) {
-	for (int i (0); i<=nb_update_; i+=1) {
-		update ();
-	};
-};
-
-void Neuron::spike (double t_) const {
 	
-	cout << "There is a spike at time : " << t_*0.1 << endl;  //Pour tenir compte du décalage avec h=0.1	
+	
+		
+		
+
+
+
+void Neuron::n_update (int nb_update_, int poisson_) {
+	for (int i (0); i<=nb_update_; i+=1) {
+		update (poisson_);
+	};
 };
+
+//void Neuron::spike (double t_) const {
+	
+	//cout << "There is a spike at time : " << t_*0.1 << endl;  //Pour tenir compte du décalage avec h=0.1	
+//};
