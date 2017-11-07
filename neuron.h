@@ -37,6 +37,7 @@ class Neuron {
 	
 	
 	int id_neuron;
+	int poisson_;
 	bool spike;   ///Indicate if the neuronhas spiked or not at a time t.
 	double J;  ///Weight of the connection
 	double v_;    ///Membrne potential
@@ -53,7 +54,7 @@ class Neuron {
 	
 	///Constructor
 	
-	Neuron (double i_, double i_ext_, int nb_);
+	Neuron (double i_, double i_ext_, int nb_, int poisson);
 	
 	
 	///Method which takes for parameter /param nb_connection_ex for the number of connection with excitatory neurons and /param nb_connection_in for th number of connection with th inhbitory ones.
@@ -64,6 +65,10 @@ class Neuron {
 	///Method which gives the position of the neuron in the vector representing the network.
 	///
 	int get_id ();
+	
+	
+	
+	int get_poisson ();
 	
 	
 	///Method which gives the membrane potential of the neuron.

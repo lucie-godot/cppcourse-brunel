@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Network : public Neuron {
+class Network {
 	
 	private :
 	
@@ -42,7 +42,7 @@ class Network : public Neuron {
 	
 	///Method whih takes for parameter /param t_ for the time.
 	///It modifies the buffer of the neurons of the target.
-	void inform_target (int t_);
+	void inform_target (int t_, int i_);
 	
 	
 	

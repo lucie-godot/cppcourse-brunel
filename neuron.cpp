@@ -7,7 +7,7 @@ using namespace std;
 
 
 
-Neuron::Neuron(double i_, double i_ext_, int nb_): I_EXT_(i_ext_), id_neuron(nb_), spike (false), J(i_), v_(V_REF_), local_time_(0), clock_ref_(0), nb_spikes_(0), time_spike_(0), ring_buffer(D+1, 0.0){
+Neuron::Neuron(double j, double i_ext_, int nb_, int poisson): I_EXT_(i_ext_), id_neuron(nb_), poisson_(poisson), spike (false), J(j), v_(V_REF_), local_time_(0), clock_ref_(0), nb_spikes_(0), time_spike_(0), ring_buffer(D+1, 0.0){
 };
 
 
@@ -17,10 +17,10 @@ void Neuron::set_target (int nb_connection_ex, int nb_connection_in){
 	
 	srand(time(NULL));
 	
-	for (int i = 0; i < nb_connection_ex; i += 1) {
+	for (unsigned int i = 0; i < nb_connection_ex; i += 1) {
 		target.push_back(rand()%10000);
 	}
-	for (int i = 0; i < nb_connection_in; i += 1) {
+	for (unsigned int i = 0; i < nb_connection_in; i += 1) {
 		target.push_back(rand()%(12500-10000)+10000);
 	}
 };
@@ -32,6 +32,11 @@ int Neuron::get_id () {
 	return id_neuron;
 };
 
+
+
+int Neuron::get_poisson (){
+	return poisson_;
+};
 	
 double Neuron::get_mb_potential () const {
 	return v_;
@@ -114,6 +119,8 @@ void Neuron::update (int poisson_, int t_) {
 	if (clock_ref_ > 0) {
 		v_ = V_RESET_;
 		spike = false;
+		clock_ref_ -= 1;
+		local_time_ += H_;
 	}
 	else {
 		if (v_ >= V_THR_) {  //The neuron is refractory
@@ -122,16 +129,20 @@ void Neuron::update (int poisson_, int t_) {
 			v_ = V_RESET_;
 			spike = true;
 			time_spike_ = local_time_;
+			clock_ref_ -= 1;
+			local_time_ += H_;
 		}
 		else {
-			
-			v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)] + poisson_*0.1;
+			//Implementation of the Poisson distribution
+			static random_device rd;
+			static mt19937 gen(rd());
+			static poisson_distribution <> d(2);
+			v_ = C1*v_ + I_EXT_*C2 + ring_buffer [local_time_%(D+1)] + d(gen)*poisson_*0.1;
 			spike = false;
+			clock_ref_ -= 1;
+			local_time_ += H_;
 		}
 	};
-	clock_ref_ -= 1;
-	local_time_ += H_;
-	//cout << ring_buffer [local_time_%(D+1)] << "  " << id_neuron << endl;
 };
 	
 	

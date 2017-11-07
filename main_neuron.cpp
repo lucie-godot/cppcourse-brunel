@@ -10,6 +10,7 @@ using namespace std;
 
 
 int main () {
+	
 	int t_ = 0;
 	int t_stop_ = 10000;
 	Network cortex ;

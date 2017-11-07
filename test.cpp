@@ -9,10 +9,10 @@ using namespace std;
 
 TEST (NeuronTest, OneExcitatoryMbPotential) {
 	
-	Neuron n1 (0.1, 1, 0);
-	Neuron n2 (0.1, 1, 0);
-	Neuron n3 (0.1, 1.01, 0);
-	Neuron n4 (0.1, 0, 0);
+	Neuron n1 (0.1, 1, 0, 0);
+	Neuron n2 (0.1, 1, 0, 0);
+	Neuron n3 (0.1, 1.01, 0, 0);
+	Neuron n4 (0.1, 0, 0, 0);
 	
 	
 	n1.update(0, 0);
@@ -32,10 +32,10 @@ TEST (NeuronTest, OneExcitatoryMbPotential) {
 
 TEST (NeuronTest, OneInhibitory) {
 	
-	Neuron n1 (-0.5, 1.0, 0);
-	Neuron n2 (-0.5, 1.0, 0);
-	Neuron n3 (-0.5, 0.0, 0);
-	Neuron n4 (-0.5, 1.01, 0);
+	Neuron n1 (-0.5, 1.0, 0, 0);
+	Neuron n2 (-0.5, 1.0, 0, 0);
+	Neuron n3 (-0.5, 0.0, 0, 0);
+	Neuron n4 (-0.5, 1.01, 0, 0);
 	
 	n1.update(0, 0);
 	n2.n_update(5, 0, 0);
@@ -53,9 +53,9 @@ TEST (NeuronTest, OneInhibitory) {
 
 TEST (NeuronTest, NumberSpikesExcitatory) {
 	
-	Neuron n1 (0.1, 1.01, 0);
-	Neuron n2 (0.1, 0, 0);
-	Neuron n3 (0.1, 1.0, 0);
+	Neuron n1 (0.1, 1.01, 0, 0);
+	Neuron n2 (0.1, 0, 0, 0);
+	Neuron n3 (0.1, 1.0, 0, 0);
 	
 	n1.n_update(10000, 0, 0);
 	n2.n_update(10000, 0, 0);
@@ -69,9 +69,9 @@ TEST (NeuronTest, NumberSpikesExcitatory) {
 
 
 TEST (NeuronTest, NumberSpikesInhibitory) {
-	Neuron n1 (-0.5, 1.01, 0);
-	Neuron n2 (-0.5, 0, 0);
-	Neuron n3 (-0.5, 1.0, 0);
+	Neuron n1 (-0.5, 1.01, 0, 0);
+	Neuron n2 (-0.5, 0, 0, 0);
+	Neuron n3 (-0.5, 1.0, 0, 0);
 	
 	n1.n_update(10000, 0, 0);
 	n2.n_update(10000, 0, 0);
@@ -83,11 +83,13 @@ TEST (NeuronTest, NumberSpikesInhibitory) {
 }
 
 TEST (NeuronTest, ValueSpikes) {
-	Neuron n1 (0.1, 1.01, 0);
-	Neuron n2 (-0.5, 1.01, 0);
+	Neuron n1 (0.1, 1.01, 0, 0);
+	Neuron n2 (-0.5, 1.01, 0, 0);
 	
 	n1.n_update(2000, 0, 0);
 	n2.n_update(10000, 0, 0);
+	
+	EXPECT_EQ(n1.get_time_spike(), 192.4);
 	
 }
 
