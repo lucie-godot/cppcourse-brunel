@@ -10,54 +10,74 @@ class Network {
 	
 	private :
 	
-	const int nb_neuron = 12500;  ///Total number of neurons of the network.
+	const unsigned int nb_neuron_;  ///Total number of neurons of the network.
 	const int h_ = 1;  ///Path of time, for the general time.
-	const int nb_neu_ex = 10000;   ///Number of neuron which are excitatory.
-	const int nb_neu_in = 2500;   ///Number of neuron which are inhibitory.
-	const int nb_connection_ex = 1000;  ///Number of connections that should be done with excitatory neurons.
-	const int nb_connection_in = 250;  ///Number of connections that should be done with inhibitory neurons.
+	const unsigned int nb_neu_ex_;   ///Number of neuron which are excitatory.
+	const unsigned int nb_neu_in_;   ///Number of neuron which are inhibitory.
+	const unsigned int nb_connection_ex_;  ///Number of connections that should be done with excitatory neurons.
+	const unsigned int nb_connection_in_;  ///Number of connections that should be done with inhibitory neurons.
 	
 	
-	vector<Neuron> neurons;   ///Vector which contains /a nb_neuron neurons.
+	vector<Neuron> neurons_;   ///Vector which contains /a nb_neuron neurons.
 	
-	ofstream f_spikes_time;
+	ofstream f_spikes_time;   ///File which contains every spike's time, and the id of the neuron which has spiked.
 	
 	
 	public :
 	
 	
 	///Constructor.
-	Network();
+	///@param name : name of the file.
+	///@param nb_neuron : number of neurons for the simulation
+	///@param nb_con_ex : number of connection each neuron has to do with excitatory neurons
+	///@param nb_con_in : number of connection each neuron has to do with inhibitory neurons
+	///@param nb_neu_ex : number of excitatory neurons
+	///@param nb_neu_in : number of inhibitory neurons
+	Network(string name, int nb_neuron, int nb_con_ex, int nb_con_in, int nb_neu_ex, int nb_neu_in);
 	
 	
-	///Method which creates the elements of the vector of neurons.
-	///
-	void set_neuron ();
+	///@brief Setter for the elements of the vector of neurons.
+	///@param g : relative inhibitory weight
+	void set_neuron (int g);
 	
 	
-	///Method which implements a poisson distribution.
-	///
-	int poisson ();
-	
-	
-	///Method whih takes for parameter /param t_ for the time.
-	///It modifies the buffer of the neurons of the target.
-	void inform_target (int t_, int i_);
-	
-	
-	
-	///Method which sets the target of each neuron.
-	///
+	///@brief Setter for the target of each neuron.
 	void set_all_target ();
 	
-	///Method which takes the parameters /param t_ for the time and /param i_ for the number of the neuron studied.
-	///It fills the file with the time a apike occures and the number of the neuron which has produced it.
-	void write_spikes (int t_, int i_);
+	
+	///@brief Getter for the size of the vector of neurons.
+	int get_size_network () const;
 	
 	
-	///Method which takes the parameters /param t_ for the time and /param t_stop_ for the time wher the simulation stops.
-	///It updates each neurons of the network during the duration of the simulation.
-	void general_update (int t_, int t_stop_);
+	///@brief Getter for an element of the vector of neurons.
+	Neuron get_network_element (int i) const;
+	
+	
+	///@brief Method which fills the buffers of one target of one neuron.
+	///@param t : time
+	///@param i : id of the neuron studied
+	///@param j : id of the neuron target
+	void inform_one_target (int t, int i, int j);
+	
+	
+	///@brief Method which fills the buffers of all the targets of one neuron.
+	///@param t : time
+	///@param i : id of the neuron studied
+	void general_inform_target (int t, int i);
+	
+	
+	
+	///@brief Method which fills the file with the time a spike occured and the id of the neuron which has produced it.
+	///@param t : time 
+	///@param i : id of the neuron studied.
+	void write_spikes (int t, int i);
+	
+	
+	///@brief Method which updates each neurons of the network during the duration of the simulation.
+	///@param t : time (start of the simulation
+	///@param t_stop : time when the simulation stops
+	///@param eta : parameter of the poisson distribution
+	void general_update (int t, int t_stop, int eta);
 	
 	
 };

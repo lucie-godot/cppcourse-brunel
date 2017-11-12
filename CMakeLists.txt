@@ -7,8 +7,8 @@ enable_testing()
 add_subdirectory(gtest)
 include_directories(/Users/luciegodot/Documents/neuron/include /Users/luciegodot/Documents/neuron)
 
-add_executable (neuron neuron.h neuron.cpp network.h network.cpp main_neuron.cpp )
-add_executable (neuron_unittest neuron.cpp test.cpp)
+add_executable (neuron neuron.h neuron.cpp network.h network.cpp experiment.h experiment.cpp main_neuron.cpp )
+add_executable (neuron_unittest neuron.cpp network.cpp experiment.cpp test.cpp)
 
 
 target_link_libraries(neuron_unittest gtest gtest_main)
