@@ -11,6 +11,11 @@ class Experiment {
 	
 	int g_;   ///Relative inhibitory weight.
 	int eta_;
+	unsigned int nb_neu_ = 12500;   ///Number of neurons of the network.
+	unsigned int nb_n_ex_ = 10000;   ///Number of excitatory neurons.
+	unsigned int nb_n_in_ = 2500;   ///Number of inhibitory neurons.
+	unsigned int nb_con_ex_ = 1000;   ///Number of excitatory connections.
+	unsigned int nb_con_in_ = 250;   ///Number of inhibitory connections.
 	
 	
 	public:

@@ -9,10 +9,10 @@ Network::Network (string name, int nb_neuron, int nb_con_ex, int nb_con_in, int 
 
 
 void Network::set_neuron (int g) {
-	for (unsigned int i = 0; i < nb_neu_ex_; i += 1) {  //Inisialisation of the vector of neuron
+	for (unsigned int i = 0; i < nb_neu_ex_; i += 1) {
 		neurons_.push_back(Neuron(0, i, 1,1));
 	}
-	for (unsigned int i = 0; i < nb_neu_in_; i += 1) {  //Inisialisation of the vector of neuron
+	for (unsigned int i = 0; i < nb_neu_in_; i += 1) {
 		neurons_.push_back(Neuron(0, nb_neu_ex_ + i, 1, -g));
 	}
 		

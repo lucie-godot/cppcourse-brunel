@@ -96,8 +96,8 @@ int Neuron::get_size_target () {
 
 
 
-void Neuron::add_term_buffer (int t) {  //t_ est le local_time_ du 2eme neuron
-	ring_buffer_ [(t + D_) % (D_ + 1)] += j_ ;    //On prend en compte le délais en mettant j directement dans la bonne case
+void Neuron::add_term_buffer (int t) {
+	ring_buffer_ [(t + D_) % (D_ + 1)] += j_ ;
 };
 
 

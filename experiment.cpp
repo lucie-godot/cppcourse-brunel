@@ -19,7 +19,7 @@ int Experiment::get_eta () const{
 
 
 void Experiment::set_cortex (int g, int eta, int t, int t_stop, string name ){
-	Network cortex (name, 12500, 1000, 250, 10000, 2500);
+	Network cortex (name, nb_neu_, nb_con_ex_, nb_con_in_, nb_n_ex_, nb_n_in_);
 	cortex.set_neuron (g);
 	cortex.set_all_target();
 	cortex.general_update(t, t_stop, eta);
